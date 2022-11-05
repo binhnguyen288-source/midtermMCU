@@ -1958,24 +1958,24 @@ LOAD c:/stm32toolchain/arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi/
  .debug_ranges  0x00000920       0x18 build/system_stm32f1xx.o
  .debug_ranges  0x00000938       0x20 build/startup_stm32f103x6.o
 
-.debug_line     0x00000000     0x97af
+.debug_line     0x00000000     0x97ad
  .debug_line    0x00000000      0x51b build/main.o
  .debug_line    0x0000051b       0xfa build/timer.o
- .debug_line    0x00000615      0x450 build/button.o
- .debug_line    0x00000a65      0x1a5 build/fsm.o
- .debug_line    0x00000c0a      0x18a build/7SEG.o
- .debug_line    0x00000d94      0x2ff build/stm32f1xx_it.o
- .debug_line    0x00001093      0x26b build/stm32f1xx_hal_msp.o
- .debug_line    0x000012fe     0x461c build/stm32f1xx_hal_tim.o
- .debug_line    0x0000591a     0x1b3b build/stm32f1xx_hal_tim_ex.o
- .debug_line    0x00007455      0x542 build/stm32f1xx_hal.o
- .debug_line    0x00007997      0xc38 build/stm32f1xx_hal_rcc.o
- .debug_line    0x000085cf      0x5db build/stm32f1xx_hal_gpio.o
- .debug_line    0x00008baa      0x64c build/stm32f1xx_hal_cortex.o
- .debug_line    0x000091f6      0x25a build/system_stm32f1xx.o
- .debug_line    0x00009450       0x75 build/startup_stm32f103x6.o
- .debug_line    0x000094c5      0x176 c:/stm32toolchain/arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp\libc_nano.a(libc_a-memset.o)
- .debug_line    0x0000963b      0x174 c:/stm32toolchain/arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp\libc_nano.a(libc_a-init.o)
+ .debug_line    0x00000615      0x44e build/button.o
+ .debug_line    0x00000a63      0x1a5 build/fsm.o
+ .debug_line    0x00000c08      0x18a build/7SEG.o
+ .debug_line    0x00000d92      0x2ff build/stm32f1xx_it.o
+ .debug_line    0x00001091      0x26b build/stm32f1xx_hal_msp.o
+ .debug_line    0x000012fc     0x461c build/stm32f1xx_hal_tim.o
+ .debug_line    0x00005918     0x1b3b build/stm32f1xx_hal_tim_ex.o
+ .debug_line    0x00007453      0x542 build/stm32f1xx_hal.o
+ .debug_line    0x00007995      0xc38 build/stm32f1xx_hal_rcc.o
+ .debug_line    0x000085cd      0x5db build/stm32f1xx_hal_gpio.o
+ .debug_line    0x00008ba8      0x64c build/stm32f1xx_hal_cortex.o
+ .debug_line    0x000091f4      0x25a build/system_stm32f1xx.o
+ .debug_line    0x0000944e       0x75 build/startup_stm32f103x6.o
+ .debug_line    0x000094c3      0x176 c:/stm32toolchain/arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp\libc_nano.a(libc_a-memset.o)
+ .debug_line    0x00009639      0x174 c:/stm32toolchain/arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp\libc_nano.a(libc_a-init.o)
 
 .debug_str      0x00000000     0x2fb3
  .debug_str     0x00000000      0xa98 build/main.o
