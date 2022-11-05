@@ -1,0 +1,300 @@
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"timer.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.isTimer1Flag,"ax",%progbits
+  18              		.align	1
+  19              		.global	isTimer1Flag
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	isTimer1Flag:
+  25              	.LFB0:
+  26              		.file 1 "Core/Src/timer.c"
+   1:Core/Src/timer.c **** #include "timer.h"
+   2:Core/Src/timer.c **** #include <stdint.h>
+   3:Core/Src/timer.c **** static int timer1 = 100;
+   4:Core/Src/timer.c **** static int timer1_flag = 0;
+   5:Core/Src/timer.c **** int isTimer1Flag() {
+  27              		.loc 1 5 20 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+   6:Core/Src/timer.c ****     int ret = timer1_flag;
+  32              		.loc 1 6 5 view .LVU1
+  33              		.loc 1 6 9 is_stmt 0 view .LVU2
+  34 0000 024B     		ldr	r3, .L2
+  35 0002 1868     		ldr	r0, [r3]
+  36              	.LVL0:
+   7:Core/Src/timer.c ****     timer1_flag = 0;
+  37              		.loc 1 7 5 is_stmt 1 view .LVU3
+  38              		.loc 1 7 17 is_stmt 0 view .LVU4
+  39 0004 0022     		movs	r2, #0
+  40 0006 1A60     		str	r2, [r3]
+   8:Core/Src/timer.c ****     return ret;
+  41              		.loc 1 8 5 is_stmt 1 view .LVU5
+   9:Core/Src/timer.c **** }
+  42              		.loc 1 9 1 is_stmt 0 view .LVU6
+  43 0008 7047     		bx	lr
+  44              	.L3:
+  45 000a 00BF     		.align	2
+  46              	.L2:
+  47 000c 00000000 		.word	.LANCHOR0
+  48              		.cfi_endproc
+  49              	.LFE0:
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s 			page 2
+
+
+  51              		.section	.text.runTimer1,"ax",%progbits
+  52              		.align	1
+  53              		.global	runTimer1
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	runTimer1:
+  59              	.LFB1:
+  10:Core/Src/timer.c **** 
+  11:Core/Src/timer.c **** void runTimer1() {
+  60              		.loc 1 11 18 is_stmt 1 view -0
+  61              		.cfi_startproc
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  12:Core/Src/timer.c ****     --timer1;
+  65              		.loc 1 12 5 view .LVU8
+  66 0000 054A     		ldr	r2, .L6
+  67 0002 1368     		ldr	r3, [r2]
+  68 0004 013B     		subs	r3, r3, #1
+  69 0006 1360     		str	r3, [r2]
+  13:Core/Src/timer.c ****     if (timer1 == 0) {
+  70              		.loc 1 13 5 view .LVU9
+  71              		.loc 1 13 8 is_stmt 0 view .LVU10
+  72 0008 2BB9     		cbnz	r3, .L4
+  14:Core/Src/timer.c ****         timer1_flag = 1;
+  73              		.loc 1 14 9 is_stmt 1 view .LVU11
+  74              		.loc 1 14 21 is_stmt 0 view .LVU12
+  75 000a 044B     		ldr	r3, .L6+4
+  76 000c 0122     		movs	r2, #1
+  77 000e 1A60     		str	r2, [r3]
+  15:Core/Src/timer.c ****         timer1 = 100;
+  78              		.loc 1 15 9 is_stmt 1 view .LVU13
+  79              		.loc 1 15 16 is_stmt 0 view .LVU14
+  80 0010 014B     		ldr	r3, .L6
+  81 0012 6422     		movs	r2, #100
+  82 0014 1A60     		str	r2, [r3]
+  83              	.L4:
+  16:Core/Src/timer.c ****     }
+  17:Core/Src/timer.c **** }
+  84              		.loc 1 17 1 view .LVU15
+  85 0016 7047     		bx	lr
+  86              	.L7:
+  87              		.align	2
+  88              	.L6:
+  89 0018 00000000 		.word	.LANCHOR1
+  90 001c 00000000 		.word	.LANCHOR0
+  91              		.cfi_endproc
+  92              	.LFE1:
+  94              		.section	.text.isTimer10Flag,"ax",%progbits
+  95              		.align	1
+  96              		.global	isTimer10Flag
+  97              		.syntax unified
+  98              		.thumb
+  99              		.thumb_func
+ 101              	isTimer10Flag:
+ 102              	.LFB2:
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s 			page 3
+
+
+  18:Core/Src/timer.c **** 
+  19:Core/Src/timer.c **** 
+  20:Core/Src/timer.c **** static int timer10_flag = 0;
+  21:Core/Src/timer.c **** static int timer10 = 1000;
+  22:Core/Src/timer.c **** 
+  23:Core/Src/timer.c **** int isTimer10Flag() {
+ 103              		.loc 1 23 21 is_stmt 1 view -0
+ 104              		.cfi_startproc
+ 105              		@ args = 0, pretend = 0, frame = 0
+ 106              		@ frame_needed = 0, uses_anonymous_args = 0
+ 107              		@ link register save eliminated.
+  24:Core/Src/timer.c ****     int ret = timer10_flag;
+ 108              		.loc 1 24 5 view .LVU17
+ 109              		.loc 1 24 9 is_stmt 0 view .LVU18
+ 110 0000 024B     		ldr	r3, .L9
+ 111 0002 1868     		ldr	r0, [r3]
+ 112              	.LVL1:
+  25:Core/Src/timer.c ****     timer10_flag = 0;
+ 113              		.loc 1 25 5 is_stmt 1 view .LVU19
+ 114              		.loc 1 25 18 is_stmt 0 view .LVU20
+ 115 0004 0022     		movs	r2, #0
+ 116 0006 1A60     		str	r2, [r3]
+  26:Core/Src/timer.c ****     return ret;
+ 117              		.loc 1 26 5 is_stmt 1 view .LVU21
+  27:Core/Src/timer.c **** }
+ 118              		.loc 1 27 1 is_stmt 0 view .LVU22
+ 119 0008 7047     		bx	lr
+ 120              	.L10:
+ 121 000a 00BF     		.align	2
+ 122              	.L9:
+ 123 000c 00000000 		.word	.LANCHOR2
+ 124              		.cfi_endproc
+ 125              	.LFE2:
+ 127              		.section	.text.runTimer10,"ax",%progbits
+ 128              		.align	1
+ 129              		.global	runTimer10
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	runTimer10:
+ 135              	.LFB3:
+  28:Core/Src/timer.c **** 
+  29:Core/Src/timer.c **** void runTimer10() {
+ 136              		.loc 1 29 19 is_stmt 1 view -0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 140              		@ link register save eliminated.
+  30:Core/Src/timer.c ****     --timer10;
+ 141              		.loc 1 30 5 view .LVU24
+ 142 0000 054A     		ldr	r2, .L13
+ 143 0002 1368     		ldr	r3, [r2]
+ 144 0004 013B     		subs	r3, r3, #1
+ 145 0006 1360     		str	r3, [r2]
+  31:Core/Src/timer.c ****     if (timer10 == 0) {
+ 146              		.loc 1 31 5 view .LVU25
+ 147              		.loc 1 31 8 is_stmt 0 view .LVU26
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s 			page 4
+
+
+ 148 0008 2BB9     		cbnz	r3, .L11
+  32:Core/Src/timer.c ****         timer10_flag = 1;
+ 149              		.loc 1 32 9 is_stmt 1 view .LVU27
+ 150              		.loc 1 32 22 is_stmt 0 view .LVU28
+ 151 000a 044B     		ldr	r3, .L13+4
+ 152 000c 0122     		movs	r2, #1
+ 153 000e 1A60     		str	r2, [r3]
+  33:Core/Src/timer.c ****         timer10 = 100;
+ 154              		.loc 1 33 9 is_stmt 1 view .LVU29
+ 155              		.loc 1 33 17 is_stmt 0 view .LVU30
+ 156 0010 014B     		ldr	r3, .L13
+ 157 0012 6422     		movs	r2, #100
+ 158 0014 1A60     		str	r2, [r3]
+ 159              	.L11:
+  34:Core/Src/timer.c ****     }
+  35:Core/Src/timer.c **** }
+ 160              		.loc 1 35 1 view .LVU31
+ 161 0016 7047     		bx	lr
+ 162              	.L14:
+ 163              		.align	2
+ 164              	.L13:
+ 165 0018 00000000 		.word	.LANCHOR3
+ 166 001c 00000000 		.word	.LANCHOR2
+ 167              		.cfi_endproc
+ 168              	.LFE3:
+ 170              		.section	.text.resetTimer10,"ax",%progbits
+ 171              		.align	1
+ 172              		.global	resetTimer10
+ 173              		.syntax unified
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	resetTimer10:
+ 178              	.LFB4:
+  36:Core/Src/timer.c **** 
+  37:Core/Src/timer.c **** void resetTimer10() {
+ 179              		.loc 1 37 21 is_stmt 1 view -0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+  38:Core/Src/timer.c ****     timer10 = 1000;
+ 184              		.loc 1 38 5 view .LVU33
+ 185              		.loc 1 38 13 is_stmt 0 view .LVU34
+ 186 0000 034B     		ldr	r3, .L16
+ 187 0002 4FF47A72 		mov	r2, #1000
+ 188 0006 1A60     		str	r2, [r3]
+  39:Core/Src/timer.c ****     timer10_flag = 0;
+ 189              		.loc 1 39 5 is_stmt 1 view .LVU35
+ 190              		.loc 1 39 18 is_stmt 0 view .LVU36
+ 191 0008 024B     		ldr	r3, .L16+4
+ 192 000a 0022     		movs	r2, #0
+ 193 000c 1A60     		str	r2, [r3]
+  40:Core/Src/timer.c **** }...
+ 194              		.loc 1 40 1 view .LVU37
+ 195 000e 7047     		bx	lr
+ 196              	.L17:
+ 197              		.align	2
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s 			page 5
+
+
+ 198              	.L16:
+ 199 0010 00000000 		.word	.LANCHOR3
+ 200 0014 00000000 		.word	.LANCHOR2
+ 201              		.cfi_endproc
+ 202              	.LFE4:
+ 204              		.section	.bss.timer10_flag,"aw",%nobits
+ 205              		.align	2
+ 206              		.set	.LANCHOR2,. + 0
+ 209              	timer10_flag:
+ 210 0000 00000000 		.space	4
+ 211              		.section	.bss.timer1_flag,"aw",%nobits
+ 212              		.align	2
+ 213              		.set	.LANCHOR0,. + 0
+ 216              	timer1_flag:
+ 217 0000 00000000 		.space	4
+ 218              		.section	.data.timer1,"aw"
+ 219              		.align	2
+ 220              		.set	.LANCHOR1,. + 0
+ 223              	timer1:
+ 224 0000 64000000 		.word	100
+ 225              		.section	.data.timer10,"aw"
+ 226              		.align	2
+ 227              		.set	.LANCHOR3,. + 0
+ 230              	timer10:
+ 231 0000 E8030000 		.word	1000
+ 232              		.text
+ 233              	.Letext0:
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 timer.c
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:18     .text.isTimer1Flag:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:24     .text.isTimer1Flag:00000000 isTimer1Flag
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:47     .text.isTimer1Flag:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:52     .text.runTimer1:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:58     .text.runTimer1:00000000 runTimer1
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:89     .text.runTimer1:00000018 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:95     .text.isTimer10Flag:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:101    .text.isTimer10Flag:00000000 isTimer10Flag
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:123    .text.isTimer10Flag:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:128    .text.runTimer10:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:134    .text.runTimer10:00000000 runTimer10
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:165    .text.runTimer10:00000018 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:171    .text.resetTimer10:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:177    .text.resetTimer10:00000000 resetTimer10
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:199    .text.resetTimer10:00000010 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:205    .bss.timer10_flag:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:209    .bss.timer10_flag:00000000 timer10_flag
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:212    .bss.timer1_flag:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:216    .bss.timer1_flag:00000000 timer1_flag
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:219    .data.timer1:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:223    .data.timer1:00000000 timer1
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:226    .data.timer10:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\cc0Wun3e.s:230    .data.timer10:00000000 timer10
+
+NO UNDEFINED SYMBOLS

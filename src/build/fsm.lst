@@ -1,0 +1,550 @@
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"fsm.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.fsmstep1,"ax",%progbits
+  18              		.align	1
+  19              		.global	fsmstep1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	fsmstep1:
+  25              	.LVL0:
+  26              	.LFB0:
+  27              		.file 1 "Core/Src/fsm.c"
+   1:Core/Src/fsm.c **** #include "fsm.h"
+   2:Core/Src/fsm.c **** #include "common.h"
+   3:Core/Src/fsm.c **** 
+   4:Core/Src/fsm.c **** void fsmstep1(int incPressed, int decPressed, int resetPressed) {
+  28              		.loc 1 4 65 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   5:Core/Src/fsm.c ****     enum State {
+  33              		.loc 1 5 5 view .LVU1
+   6:Core/Src/fsm.c ****         IDLE,
+   7:Core/Src/fsm.c ****         INC_COUNTER,
+   8:Core/Src/fsm.c ****         DEC_COUNTER,
+   9:Core/Src/fsm.c ****         RESET_COUNTER
+  10:Core/Src/fsm.c ****     };
+  11:Core/Src/fsm.c ****     static enum State state = IDLE;
+  34              		.loc 1 11 5 view .LVU2
+  12:Core/Src/fsm.c ****     switch (state) {
+  35              		.loc 1 12 5 view .LVU3
+  36 0000 224B     		ldr	r3, .L11
+  37 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  38 0004 032B     		cmp	r3, #3
+  39 0006 3DD8     		bhi	.L2
+  40 0008 DFE803F0 		tbb	[pc, r3]
+  41              	.L4:
+  42 000c 02       		.byte	(.L7-.L4)/2
+  43 000d 12       		.byte	(.L6-.L4)/2
+  44 000e 24       		.byte	(.L5-.L4)/2
+  45 000f 36       		.byte	(.L3-.L4)/2
+  46              		.p2align 1
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 2
+
+
+  47              	.L7:
+  13:Core/Src/fsm.c ****         case IDLE: 
+  14:Core/Src/fsm.c ****             if (incPressed) {
+  48              		.loc 1 14 13 view .LVU4
+  49              		.loc 1 14 16 is_stmt 0 view .LVU5
+  50 0010 18B1     		cbz	r0, .L8
+  15:Core/Src/fsm.c ****                 state = INC_COUNTER;
+  51              		.loc 1 15 17 is_stmt 1 view .LVU6
+  52              		.loc 1 15 23 is_stmt 0 view .LVU7
+  53 0012 1E4B     		ldr	r3, .L11
+  54 0014 0122     		movs	r2, #1
+  55              	.LVL1:
+  56              		.loc 1 15 23 view .LVU8
+  57 0016 1A70     		strb	r2, [r3]
+  58 0018 7047     		bx	lr
+  59              	.LVL2:
+  60              	.L8:
+  16:Core/Src/fsm.c ****             } else if (decPressed) {
+  61              		.loc 1 16 20 is_stmt 1 view .LVU9
+  62              		.loc 1 16 23 is_stmt 0 view .LVU10
+  63 001a 19B1     		cbz	r1, .L10
+  17:Core/Src/fsm.c ****                 state = DEC_COUNTER;
+  64              		.loc 1 17 17 is_stmt 1 view .LVU11
+  65              		.loc 1 17 23 is_stmt 0 view .LVU12
+  66 001c 1B4B     		ldr	r3, .L11
+  67 001e 0222     		movs	r2, #2
+  68              	.LVL3:
+  69              		.loc 1 17 23 view .LVU13
+  70 0020 1A70     		strb	r2, [r3]
+  71 0022 7047     		bx	lr
+  72              	.LVL4:
+  73              	.L10:
+  18:Core/Src/fsm.c ****             } else if (resetPressed) {
+  74              		.loc 1 18 20 is_stmt 1 view .LVU14
+  75              		.loc 1 18 23 is_stmt 0 view .LVU15
+  76 0024 002A     		cmp	r2, #0
+  77 0026 30D0     		beq	.L1
+  19:Core/Src/fsm.c ****                 state = RESET_COUNTER;
+  78              		.loc 1 19 17 is_stmt 1 view .LVU16
+  79              		.loc 1 19 23 is_stmt 0 view .LVU17
+  80 0028 184B     		ldr	r3, .L11
+  81 002a 0322     		movs	r2, #3
+  82              	.LVL5:
+  83              		.loc 1 19 23 view .LVU18
+  84 002c 1A70     		strb	r2, [r3]
+  85 002e 7047     		bx	lr
+  86              	.LVL6:
+  87              	.L6:
+  20:Core/Src/fsm.c ****             }
+  21:Core/Src/fsm.c ****             break;
+  22:Core/Src/fsm.c ****         case INC_COUNTER: 
+  23:Core/Src/fsm.c ****             counter = (counter + 1) % 10;
+  88              		.loc 1 23 13 is_stmt 1 view .LVU19
+  89              		.loc 1 23 32 is_stmt 0 view .LVU20
+  90 0030 1748     		ldr	r0, .L11+4
+  91              	.LVL7:
+  92              		.loc 1 23 32 view .LVU21
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 3
+
+
+  93 0032 0268     		ldr	r2, [r0]
+  94              	.LVL8:
+  95              		.loc 1 23 32 view .LVU22
+  96 0034 0132     		adds	r2, r2, #1
+  97              		.loc 1 23 37 view .LVU23
+  98 0036 1749     		ldr	r1, .L11+8
+  99              	.LVL9:
+ 100              		.loc 1 23 37 view .LVU24
+ 101 0038 81FB0231 		smull	r3, r1, r1, r2
+ 102 003c D317     		asrs	r3, r2, #31
+ 103 003e C3EBA103 		rsb	r3, r3, r1, asr #2
+ 104 0042 03EB8303 		add	r3, r3, r3, lsl #2
+ 105 0046 A2EB4303 		sub	r3, r2, r3, lsl #1
+ 106              		.loc 1 23 21 view .LVU25
+ 107 004a 0360     		str	r3, [r0]
+  24:Core/Src/fsm.c ****             state = IDLE;
+ 108              		.loc 1 24 13 is_stmt 1 view .LVU26
+ 109              		.loc 1 24 19 is_stmt 0 view .LVU27
+ 110 004c 0F4B     		ldr	r3, .L11
+ 111 004e 0022     		movs	r2, #0
+ 112 0050 1A70     		strb	r2, [r3]
+  25:Core/Src/fsm.c ****             break;
+ 113              		.loc 1 25 13 is_stmt 1 view .LVU28
+ 114 0052 7047     		bx	lr
+ 115              	.LVL10:
+ 116              	.L5:
+  26:Core/Src/fsm.c ****         case DEC_COUNTER: 
+  27:Core/Src/fsm.c ****             counter = (counter + 9) % 10;
+ 117              		.loc 1 27 13 view .LVU29
+ 118              		.loc 1 27 32 is_stmt 0 view .LVU30
+ 119 0054 0E48     		ldr	r0, .L11+4
+ 120              	.LVL11:
+ 121              		.loc 1 27 32 view .LVU31
+ 122 0056 0268     		ldr	r2, [r0]
+ 123              	.LVL12:
+ 124              		.loc 1 27 32 view .LVU32
+ 125 0058 0932     		adds	r2, r2, #9
+ 126              		.loc 1 27 37 view .LVU33
+ 127 005a 0E49     		ldr	r1, .L11+8
+ 128              	.LVL13:
+ 129              		.loc 1 27 37 view .LVU34
+ 130 005c 81FB0231 		smull	r3, r1, r1, r2
+ 131 0060 D317     		asrs	r3, r2, #31
+ 132 0062 C3EBA103 		rsb	r3, r3, r1, asr #2
+ 133 0066 03EB8303 		add	r3, r3, r3, lsl #2
+ 134 006a A2EB4303 		sub	r3, r2, r3, lsl #1
+ 135              		.loc 1 27 21 view .LVU35
+ 136 006e 0360     		str	r3, [r0]
+  28:Core/Src/fsm.c ****             state = IDLE;
+ 137              		.loc 1 28 13 is_stmt 1 view .LVU36
+ 138              		.loc 1 28 19 is_stmt 0 view .LVU37
+ 139 0070 064B     		ldr	r3, .L11
+ 140 0072 0022     		movs	r2, #0
+ 141 0074 1A70     		strb	r2, [r3]
+  29:Core/Src/fsm.c ****             break;
+ 142              		.loc 1 29 13 is_stmt 1 view .LVU38
+ 143 0076 7047     		bx	lr
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 4
+
+
+ 144              	.LVL14:
+ 145              	.L3:
+  30:Core/Src/fsm.c ****         case RESET_COUNTER:
+  31:Core/Src/fsm.c ****             counter = 0;
+ 146              		.loc 1 31 13 view .LVU39
+ 147              		.loc 1 31 21 is_stmt 0 view .LVU40
+ 148 0078 0023     		movs	r3, #0
+ 149 007a 054A     		ldr	r2, .L11+4
+ 150              	.LVL15:
+ 151              		.loc 1 31 21 view .LVU41
+ 152 007c 1360     		str	r3, [r2]
+  32:Core/Src/fsm.c ****             state = IDLE;
+ 153              		.loc 1 32 13 is_stmt 1 view .LVU42
+ 154              		.loc 1 32 19 is_stmt 0 view .LVU43
+ 155 007e 034A     		ldr	r2, .L11
+ 156 0080 1370     		strb	r3, [r2]
+  33:Core/Src/fsm.c ****             break;
+ 157              		.loc 1 33 13 is_stmt 1 view .LVU44
+ 158 0082 7047     		bx	lr
+ 159              	.LVL16:
+ 160              	.L2:
+  34:Core/Src/fsm.c ****         default: 
+  35:Core/Src/fsm.c ****             state = IDLE;
+ 161              		.loc 1 35 13 view .LVU45
+ 162              		.loc 1 35 19 is_stmt 0 view .LVU46
+ 163 0084 014B     		ldr	r3, .L11
+ 164 0086 0022     		movs	r2, #0
+ 165              	.LVL17:
+ 166              		.loc 1 35 19 view .LVU47
+ 167 0088 1A70     		strb	r2, [r3]
+ 168              	.L1:
+  36:Core/Src/fsm.c ****     }
+  37:Core/Src/fsm.c **** }
+ 169              		.loc 1 37 1 view .LVU48
+ 170 008a 7047     		bx	lr
+ 171              	.L12:
+ 172              		.align	2
+ 173              	.L11:
+ 174 008c 00000000 		.word	.LANCHOR0
+ 175 0090 00000000 		.word	counter
+ 176 0094 67666666 		.word	1717986919
+ 177              		.cfi_endproc
+ 178              	.LFE0:
+ 180              		.section	.text.fsmstep2,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	fsmstep2
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 187              	fsmstep2:
+ 188              	.LVL18:
+ 189              	.LFB1:
+  38:Core/Src/fsm.c **** 
+  39:Core/Src/fsm.c **** void fsmstep2(int incLongPressed, int decLongPressed) {
+ 190              		.loc 1 39 55 is_stmt 1 view -0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 5
+
+
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              		@ link register save eliminated.
+  40:Core/Src/fsm.c ****     
+  41:Core/Src/fsm.c ****     enum State {
+ 195              		.loc 1 41 5 view .LVU50
+  42:Core/Src/fsm.c ****         IDLE,
+  43:Core/Src/fsm.c ****         INC_COUNTER,
+  44:Core/Src/fsm.c ****         DEC_COUNTER
+  45:Core/Src/fsm.c ****     };
+  46:Core/Src/fsm.c **** 
+  47:Core/Src/fsm.c ****     static enum State state = IDLE;
+ 196              		.loc 1 47 5 view .LVU51
+  48:Core/Src/fsm.c **** 
+  49:Core/Src/fsm.c ****     switch (state) {
+ 197              		.loc 1 49 5 view .LVU52
+ 198 0000 1C4B     		ldr	r3, .L20
+ 199 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 200 0004 012B     		cmp	r3, #1
+ 201 0006 11D0     		beq	.L14
+ 202 0008 022B     		cmp	r3, #2
+ 203 000a 21D0     		beq	.L15
+ 204 000c 1BB1     		cbz	r3, .L19
+  50:Core/Src/fsm.c ****         case IDLE: 
+  51:Core/Src/fsm.c ****             if (incLongPressed) {
+  52:Core/Src/fsm.c ****                 state = INC_COUNTER;
+  53:Core/Src/fsm.c ****             }
+  54:Core/Src/fsm.c ****             else if (decLongPressed) {
+  55:Core/Src/fsm.c ****                 state = DEC_COUNTER;
+  56:Core/Src/fsm.c ****             }
+  57:Core/Src/fsm.c ****             break;
+  58:Core/Src/fsm.c ****         case INC_COUNTER: 
+  59:Core/Src/fsm.c ****             counter = (counter + 1) % 10;
+  60:Core/Src/fsm.c ****             state = IDLE;
+  61:Core/Src/fsm.c ****             break;
+  62:Core/Src/fsm.c ****         case DEC_COUNTER:
+  63:Core/Src/fsm.c ****             counter = (counter + 9) % 10;
+  64:Core/Src/fsm.c ****             state = IDLE;
+  65:Core/Src/fsm.c ****             break;
+  66:Core/Src/fsm.c ****         default: state = IDLE;
+ 205              		.loc 1 66 18 view .LVU53
+ 206              		.loc 1 66 24 is_stmt 0 view .LVU54
+ 207 000e 194B     		ldr	r3, .L20
+ 208 0010 0022     		movs	r2, #0
+ 209 0012 1A70     		strb	r2, [r3]
+ 210              	.L13:
+  67:Core/Src/fsm.c ****     }
+  68:Core/Src/fsm.c **** }
+ 211              		.loc 1 68 1 view .LVU55
+ 212 0014 7047     		bx	lr
+ 213              	.L19:
+  51:Core/Src/fsm.c ****                 state = INC_COUNTER;
+ 214              		.loc 1 51 13 is_stmt 1 view .LVU56
+  51:Core/Src/fsm.c ****                 state = INC_COUNTER;
+ 215              		.loc 1 51 16 is_stmt 0 view .LVU57
+ 216 0016 18B1     		cbz	r0, .L17
+  52:Core/Src/fsm.c ****             }
+ 217              		.loc 1 52 17 is_stmt 1 view .LVU58
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 6
+
+
+  52:Core/Src/fsm.c ****             }
+ 218              		.loc 1 52 23 is_stmt 0 view .LVU59
+ 219 0018 164B     		ldr	r3, .L20
+ 220 001a 0122     		movs	r2, #1
+ 221 001c 1A70     		strb	r2, [r3]
+ 222 001e 7047     		bx	lr
+ 223              	.L17:
+  54:Core/Src/fsm.c ****                 state = DEC_COUNTER;
+ 224              		.loc 1 54 18 is_stmt 1 view .LVU60
+  54:Core/Src/fsm.c ****                 state = DEC_COUNTER;
+ 225              		.loc 1 54 21 is_stmt 0 view .LVU61
+ 226 0020 0029     		cmp	r1, #0
+ 227 0022 F7D0     		beq	.L13
+  55:Core/Src/fsm.c ****             }
+ 228              		.loc 1 55 17 is_stmt 1 view .LVU62
+  55:Core/Src/fsm.c ****             }
+ 229              		.loc 1 55 23 is_stmt 0 view .LVU63
+ 230 0024 134B     		ldr	r3, .L20
+ 231 0026 0222     		movs	r2, #2
+ 232 0028 1A70     		strb	r2, [r3]
+ 233 002a 7047     		bx	lr
+ 234              	.L14:
+  59:Core/Src/fsm.c ****             state = IDLE;
+ 235              		.loc 1 59 13 is_stmt 1 view .LVU64
+  59:Core/Src/fsm.c ****             state = IDLE;
+ 236              		.loc 1 59 32 is_stmt 0 view .LVU65
+ 237 002c 1248     		ldr	r0, .L20+4
+ 238              	.LVL19:
+  59:Core/Src/fsm.c ****             state = IDLE;
+ 239              		.loc 1 59 32 view .LVU66
+ 240 002e 0268     		ldr	r2, [r0]
+ 241 0030 0132     		adds	r2, r2, #1
+  59:Core/Src/fsm.c ****             state = IDLE;
+ 242              		.loc 1 59 37 view .LVU67
+ 243 0032 1249     		ldr	r1, .L20+8
+ 244              	.LVL20:
+  59:Core/Src/fsm.c ****             state = IDLE;
+ 245              		.loc 1 59 37 view .LVU68
+ 246 0034 81FB0231 		smull	r3, r1, r1, r2
+ 247 0038 D317     		asrs	r3, r2, #31
+ 248 003a C3EBA103 		rsb	r3, r3, r1, asr #2
+ 249 003e 03EB8303 		add	r3, r3, r3, lsl #2
+ 250 0042 A2EB4303 		sub	r3, r2, r3, lsl #1
+  59:Core/Src/fsm.c ****             state = IDLE;
+ 251              		.loc 1 59 21 view .LVU69
+ 252 0046 0360     		str	r3, [r0]
+  60:Core/Src/fsm.c ****             break;
+ 253              		.loc 1 60 13 is_stmt 1 view .LVU70
+  60:Core/Src/fsm.c ****             break;
+ 254              		.loc 1 60 19 is_stmt 0 view .LVU71
+ 255 0048 0A4B     		ldr	r3, .L20
+ 256 004a 0022     		movs	r2, #0
+ 257 004c 1A70     		strb	r2, [r3]
+  61:Core/Src/fsm.c ****         case DEC_COUNTER:
+ 258              		.loc 1 61 13 is_stmt 1 view .LVU72
+ 259 004e 7047     		bx	lr
+ 260              	.LVL21:
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 7
+
+
+ 261              	.L15:
+  63:Core/Src/fsm.c ****             state = IDLE;
+ 262              		.loc 1 63 13 view .LVU73
+  63:Core/Src/fsm.c ****             state = IDLE;
+ 263              		.loc 1 63 32 is_stmt 0 view .LVU74
+ 264 0050 0948     		ldr	r0, .L20+4
+ 265              	.LVL22:
+  63:Core/Src/fsm.c ****             state = IDLE;
+ 266              		.loc 1 63 32 view .LVU75
+ 267 0052 0268     		ldr	r2, [r0]
+ 268 0054 0932     		adds	r2, r2, #9
+  63:Core/Src/fsm.c ****             state = IDLE;
+ 269              		.loc 1 63 37 view .LVU76
+ 270 0056 0949     		ldr	r1, .L20+8
+ 271              	.LVL23:
+  63:Core/Src/fsm.c ****             state = IDLE;
+ 272              		.loc 1 63 37 view .LVU77
+ 273 0058 81FB0231 		smull	r3, r1, r1, r2
+ 274 005c D317     		asrs	r3, r2, #31
+ 275 005e C3EBA103 		rsb	r3, r3, r1, asr #2
+ 276 0062 03EB8303 		add	r3, r3, r3, lsl #2
+ 277 0066 A2EB4303 		sub	r3, r2, r3, lsl #1
+  63:Core/Src/fsm.c ****             state = IDLE;
+ 278              		.loc 1 63 21 view .LVU78
+ 279 006a 0360     		str	r3, [r0]
+  64:Core/Src/fsm.c ****             break;
+ 280              		.loc 1 64 13 is_stmt 1 view .LVU79
+  64:Core/Src/fsm.c ****             break;
+ 281              		.loc 1 64 19 is_stmt 0 view .LVU80
+ 282 006c 014B     		ldr	r3, .L20
+ 283 006e 0022     		movs	r2, #0
+ 284 0070 1A70     		strb	r2, [r3]
+  65:Core/Src/fsm.c ****         default: state = IDLE;
+ 285              		.loc 1 65 13 is_stmt 1 view .LVU81
+ 286 0072 7047     		bx	lr
+ 287              	.L21:
+ 288              		.align	2
+ 289              	.L20:
+ 290 0074 00000000 		.word	.LANCHOR1
+ 291 0078 00000000 		.word	counter
+ 292 007c 67666666 		.word	1717986919
+ 293              		.cfi_endproc
+ 294              	.LFE1:
+ 296              		.section	.text.fsmstep3,"ax",%progbits
+ 297              		.align	1
+ 298              		.global	fsmstep3
+ 299              		.syntax unified
+ 300              		.thumb
+ 301              		.thumb_func
+ 303              	fsmstep3:
+ 304              	.LVL24:
+ 305              	.LFB2:
+  69:Core/Src/fsm.c **** 
+  70:Core/Src/fsm.c **** void fsmstep3(int timer10Flag) {
+ 306              		.loc 1 70 32 view -0
+ 307              		.cfi_startproc
+ 308              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 8
+
+
+ 309              		@ frame_needed = 0, uses_anonymous_args = 0
+ 310              		@ link register save eliminated.
+  71:Core/Src/fsm.c ****     enum State {
+ 311              		.loc 1 71 5 view .LVU83
+  72:Core/Src/fsm.c ****         IDLE,
+  73:Core/Src/fsm.c ****         COUNTDOWN_STEP
+  74:Core/Src/fsm.c ****     };
+  75:Core/Src/fsm.c ****     static enum State state = IDLE;
+ 312              		.loc 1 75 5 view .LVU84
+  76:Core/Src/fsm.c ****     switch (state) {
+ 313              		.loc 1 76 5 view .LVU85
+ 314 0000 0D4B     		ldr	r3, .L28
+ 315 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 316 0004 2BB1     		cbz	r3, .L23
+ 317 0006 012B     		cmp	r3, #1
+ 318 0008 0DD0     		beq	.L24
+  77:Core/Src/fsm.c ****         case IDLE: {
+  78:Core/Src/fsm.c ****             if (timer10Flag && counter > 0) {
+  79:Core/Src/fsm.c ****                 state = COUNTDOWN_STEP;
+  80:Core/Src/fsm.c ****             }
+  81:Core/Src/fsm.c ****         }
+  82:Core/Src/fsm.c ****         break;
+  83:Core/Src/fsm.c ****         case COUNTDOWN_STEP:
+  84:Core/Src/fsm.c ****             --counter; 
+  85:Core/Src/fsm.c ****             state = IDLE; 
+  86:Core/Src/fsm.c ****         break;
+  87:Core/Src/fsm.c ****         default: state = IDLE;
+ 319              		.loc 1 87 18 view .LVU86
+ 320              		.loc 1 87 24 is_stmt 0 view .LVU87
+ 321 000a 0B4B     		ldr	r3, .L28
+ 322 000c 0022     		movs	r2, #0
+ 323 000e 1A70     		strb	r2, [r3]
+ 324              	.L22:
+  88:Core/Src/fsm.c ****     }
+  89:Core/Src/fsm.c **** }...
+ 325              		.loc 1 89 1 view .LVU88
+ 326 0010 7047     		bx	lr
+ 327              	.L23:
+  78:Core/Src/fsm.c ****             if (timer10Flag && counter > 0) {
+ 328              		.loc 1 78 13 is_stmt 1 view .LVU89
+  78:Core/Src/fsm.c ****             if (timer10Flag && counter > 0) {
+ 329              		.loc 1 78 16 is_stmt 0 view .LVU90
+ 330 0012 0028     		cmp	r0, #0
+ 331 0014 FCD0     		beq	.L22
+  78:Core/Src/fsm.c ****             if (timer10Flag && counter > 0) {
+ 332              		.loc 1 78 40 discriminator 1 view .LVU91
+ 333 0016 094B     		ldr	r3, .L28+4
+ 334 0018 1B68     		ldr	r3, [r3]
+  78:Core/Src/fsm.c ****             if (timer10Flag && counter > 0) {
+ 335              		.loc 1 78 29 discriminator 1 view .LVU92
+ 336 001a 002B     		cmp	r3, #0
+ 337 001c F8DD     		ble	.L22
+  79:Core/Src/fsm.c ****                 state = COUNTDOWN_STEP;
+ 338              		.loc 1 79 17 is_stmt 1 view .LVU93
+  79:Core/Src/fsm.c ****                 state = COUNTDOWN_STEP;
+ 339              		.loc 1 79 23 is_stmt 0 view .LVU94
+ 340 001e 064B     		ldr	r3, .L28
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 9
+
+
+ 341 0020 0122     		movs	r2, #1
+ 342 0022 1A70     		strb	r2, [r3]
+ 343 0024 7047     		bx	lr
+ 344              	.L24:
+  84:Core/Src/fsm.c ****             --counter; 
+ 345              		.loc 1 84 13 is_stmt 1 view .LVU95
+ 346 0026 054A     		ldr	r2, .L28+4
+ 347 0028 1368     		ldr	r3, [r2]
+ 348 002a 013B     		subs	r3, r3, #1
+ 349 002c 1360     		str	r3, [r2]
+  85:Core/Src/fsm.c ****             state = IDLE; 
+ 350              		.loc 1 85 13 view .LVU96
+  85:Core/Src/fsm.c ****             state = IDLE; 
+ 351              		.loc 1 85 19 is_stmt 0 view .LVU97
+ 352 002e 024B     		ldr	r3, .L28
+ 353 0030 0022     		movs	r2, #0
+ 354 0032 1A70     		strb	r2, [r3]
+  86:Core/Src/fsm.c ****         break;
+ 355              		.loc 1 86 9 is_stmt 1 view .LVU98
+ 356 0034 7047     		bx	lr
+ 357              	.L29:
+ 358 0036 00BF     		.align	2
+ 359              	.L28:
+ 360 0038 00000000 		.word	.LANCHOR2
+ 361 003c 00000000 		.word	counter
+ 362              		.cfi_endproc
+ 363              	.LFE2:
+ 365              		.section	.bss.state.0,"aw",%nobits
+ 366              		.set	.LANCHOR2,. + 0
+ 369              	state.0:
+ 370 0000 00       		.space	1
+ 371              		.section	.bss.state.1,"aw",%nobits
+ 372              		.set	.LANCHOR1,. + 0
+ 375              	state.1:
+ 376 0000 00       		.space	1
+ 377              		.section	.bss.state.2,"aw",%nobits
+ 378              		.set	.LANCHOR0,. + 0
+ 381              	state.2:
+ 382 0000 00       		.space	1
+ 383              		.text
+ 384              	.Letext0:
+ 385              		.file 2 "Core/Inc/common.h"
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\cca192YZ.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fsm.c
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:18     .text.fsmstep1:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:24     .text.fsmstep1:00000000 fsmstep1
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:42     .text.fsmstep1:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:46     .text.fsmstep1:00000010 $t
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:174    .text.fsmstep1:0000008c $d
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:181    .text.fsmstep2:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:187    .text.fsmstep2:00000000 fsmstep2
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:290    .text.fsmstep2:00000074 $d
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:297    .text.fsmstep3:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:303    .text.fsmstep3:00000000 fsmstep3
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:360    .text.fsmstep3:00000038 $d
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:369    .bss.state.0:00000000 state.0
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:370    .bss.state.0:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:375    .bss.state.1:00000000 state.1
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:376    .bss.state.1:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:381    .bss.state.2:00000000 state.2
+C:\Users\nguye\AppData\Local\Temp\cca192YZ.s:382    .bss.state.2:00000000 $d
+
+UNDEFINED SYMBOLS
+counter

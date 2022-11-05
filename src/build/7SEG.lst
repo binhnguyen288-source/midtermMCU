@@ -1,0 +1,130 @@
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"7SEG.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.display7SEG,"ax",%progbits
+  18              		.align	1
+  19              		.global	display7SEG
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	display7SEG:
+  25              	.LVL0:
+  26              	.LFB65:
+  27              		.file 1 "Core/Src/7SEG.c"
+   1:Core/Src/7SEG.c **** #include "7SEG.h"
+   2:Core/Src/7SEG.c **** #include "main.h"
+   3:Core/Src/7SEG.c **** 
+   4:Core/Src/7SEG.c **** #define SEG_a GPIO_PIN_0
+   5:Core/Src/7SEG.c **** #define SEG_b GPIO_PIN_1
+   6:Core/Src/7SEG.c **** #define SEG_c GPIO_PIN_2
+   7:Core/Src/7SEG.c **** #define SEG_d GPIO_PIN_3
+   8:Core/Src/7SEG.c **** #define SEG_e GPIO_PIN_4
+   9:Core/Src/7SEG.c **** #define SEG_f GPIO_PIN_5
+  10:Core/Src/7SEG.c **** #define SEG_g GPIO_PIN_6
+  11:Core/Src/7SEG.c **** 
+  12:Core/Src/7SEG.c **** void display7SEG(int num) {
+  28              		.loc 1 12 27 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  13:Core/Src/7SEG.c **** 
+  14:Core/Src/7SEG.c **** 
+  15:Core/Src/7SEG.c ****   static const uint16_t ALL_SEGS = 0x7f;
+  33              		.loc 1 15 3 view .LVU1
+  16:Core/Src/7SEG.c ****   
+  17:Core/Src/7SEG.c ****   static const uint16_t LUT_SET[] = {
+  34              		.loc 1 17 3 view .LVU2
+  18:Core/Src/7SEG.c ****     SEG_g,                                // 0
+  19:Core/Src/7SEG.c ****     ALL_SEGS &~ (SEG_b | SEG_c),          // 1
+  20:Core/Src/7SEG.c ****     SEG_c | SEG_f,                        // 2
+  21:Core/Src/7SEG.c ****     SEG_e | SEG_f,                        // 3
+  22:Core/Src/7SEG.c ****     SEG_a | SEG_d | SEG_e,                // 4
+  23:Core/Src/7SEG.c ****     SEG_b | SEG_e,                        // 5
+  24:Core/Src/7SEG.c ****     SEG_b,                                // 6
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s 			page 2
+
+
+  25:Core/Src/7SEG.c ****     ALL_SEGS &~ (SEG_a | SEG_b | SEG_c),  // 7
+  26:Core/Src/7SEG.c ****     0,                                    // 8
+  27:Core/Src/7SEG.c ****     SEG_e                                 // 9
+  28:Core/Src/7SEG.c ****   };
+  29:Core/Src/7SEG.c **** 
+  30:Core/Src/7SEG.c ****   const uint16_t SET_SEGS = LUT_SET[num];
+  35              		.loc 1 30 3 view .LVU3
+  36              		.loc 1 30 18 is_stmt 0 view .LVU4
+  37 0000 054B     		ldr	r3, .L2
+  38 0002 33F81020 		ldrh	r2, [r3, r0, lsl #1]
+  39              	.LVL1:
+  31:Core/Src/7SEG.c ****   
+  32:Core/Src/7SEG.c ****   GPIOB->BSRR = SET_SEGS | ((uint32_t)(ALL_SEGS & ~SET_SEGS) << 16u);
+  40              		.loc 1 32 3 is_stmt 1 view .LVU5
+  41              		.loc 1 32 51 is_stmt 0 view .LVU6
+  42 0006 D343     		mvns	r3, r2
+  43              		.loc 1 32 62 view .LVU7
+  44 0008 1B04     		lsls	r3, r3, #16
+  45 000a 03F4FE03 		and	r3, r3, #8323072
+  46              		.loc 1 32 26 view .LVU8
+  47 000e 1A43     		orrs	r2, r2, r3
+  48              	.LVL2:
+  49              		.loc 1 32 15 view .LVU9
+  50 0010 024B     		ldr	r3, .L2+4
+  51 0012 1A61     		str	r2, [r3, #16]
+  33:Core/Src/7SEG.c **** 
+  34:Core/Src/7SEG.c **** }...
+  52              		.loc 1 34 1 view .LVU10
+  53 0014 7047     		bx	lr
+  54              	.L3:
+  55 0016 00BF     		.align	2
+  56              	.L2:
+  57 0018 00000000 		.word	.LANCHOR0
+  58 001c 000C0140 		.word	1073810432
+  59              		.cfi_endproc
+  60              	.LFE65:
+  62              		.section	.rodata.LUT_SET.0,"a"
+  63              		.align	2
+  64              		.set	.LANCHOR0,. + 0
+  67              	LUT_SET.0:
+  68 0000 4000     		.short	64
+  69 0002 7900     		.short	121
+  70 0004 2400     		.short	36
+  71 0006 3000     		.short	48
+  72 0008 1900     		.short	25
+  73 000a 1200     		.short	18
+  74 000c 0200     		.short	2
+  75 000e 7800     		.short	120
+  76 0010 0000     		.short	0
+  77 0012 1000     		.short	16
+  78              		.text
+  79              	.Letext0:
+  80              		.file 2 "c:\\stm32toolchain\\arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi\\arm-none-ea
+  81              		.file 3 "c:\\stm32toolchain\\arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi\\arm-none-ea
+  82              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103x6.h"
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 7SEG.c
+C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s:18     .text.display7SEG:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s:24     .text.display7SEG:00000000 display7SEG
+C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s:57     .text.display7SEG:00000018 $d
+C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s:63     .rodata.LUT_SET.0:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccvSaGtJ.s:67     .rodata.LUT_SET.0:00000000 LUT_SET.0
+
+NO UNDEFINED SYMBOLS

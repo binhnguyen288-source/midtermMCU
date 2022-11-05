@@ -1,0 +1,953 @@
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"button.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.getRESETInput,"ax",%progbits
+  18              		.align	1
+  19              		.global	getRESETInput
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	getRESETInput:
+  25              	.LFB65:
+  26              		.file 1 "Core/Src/button.c"
+   1:Core/Src/button.c **** #include "button.h"
+   2:Core/Src/button.c **** #include "main.h"
+   3:Core/Src/button.c **** #include "timer.h"
+   4:Core/Src/button.c **** #define PRESSED_STATE RESET
+   5:Core/Src/button.c **** #define NORMAL_STATE SET
+   6:Core/Src/button.c **** 
+   7:Core/Src/button.c **** static int RESET_flag = 0;
+   8:Core/Src/button.c **** static int INC_flag = 0;
+   9:Core/Src/button.c **** static int DEC_flag = 0;
+  10:Core/Src/button.c **** 
+  11:Core/Src/button.c **** static int INC_longpressed = 0;
+  12:Core/Src/button.c **** static int DEC_longpressed = 0;
+  13:Core/Src/button.c **** 
+  14:Core/Src/button.c **** void getRESETInput() {
+  27              		.loc 1 14 22 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 70B5     		push	{r4, r5, r6, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 4, -16
+  35              		.cfi_offset 5, -12
+  36              		.cfi_offset 6, -8
+  37              		.cfi_offset 14, -4
+  15:Core/Src/button.c ****     static int KeyReg0 = NORMAL_STATE;
+  38              		.loc 1 15 5 view .LVU1
+  16:Core/Src/button.c ****     static int KeyReg1 = NORMAL_STATE;
+  39              		.loc 1 16 5 view .LVU2
+  17:Core/Src/button.c ****     static int KeyReg2 = NORMAL_STATE;
+  40              		.loc 1 17 5 view .LVU3
+  18:Core/Src/button.c ****     static int KeyReg3 = NORMAL_STATE;
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 2
+
+
+  41              		.loc 1 18 5 view .LVU4
+  19:Core/Src/button.c ****     KeyReg2 = KeyReg1;
+  42              		.loc 1 19 5 view .LVU5
+  43              		.loc 1 19 13 is_stmt 0 view .LVU6
+  44 0002 104D     		ldr	r5, .L5
+  45 0004 104C     		ldr	r4, .L5+4
+  46 0006 2368     		ldr	r3, [r4]
+  47 0008 2B60     		str	r3, [r5]
+  20:Core/Src/button.c ****     KeyReg1 = KeyReg0;
+  48              		.loc 1 20 5 is_stmt 1 view .LVU7
+  49              		.loc 1 20 13 is_stmt 0 view .LVU8
+  50 000a 104E     		ldr	r6, .L5+8
+  51 000c 3368     		ldr	r3, [r6]
+  52 000e 2360     		str	r3, [r4]
+  21:Core/Src/button.c ****     KeyReg0 = HAL_GPIO_ReadPin(RESET_GPIO_Port, RESET_Pin);
+  53              		.loc 1 21 5 is_stmt 1 view .LVU9
+  54              		.loc 1 21 15 is_stmt 0 view .LVU10
+  55 0010 4021     		movs	r1, #64
+  56 0012 0F48     		ldr	r0, .L5+12
+  57 0014 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  58              	.LVL0:
+  59              		.loc 1 21 13 view .LVU11
+  60 0018 3060     		str	r0, [r6]
+  22:Core/Src/button.c ****     if (KeyReg2 == KeyReg1 && KeyReg1 == KeyReg0) {
+  61              		.loc 1 22 5 is_stmt 1 view .LVU12
+  62              		.loc 1 22 17 is_stmt 0 view .LVU13
+  63 001a 2A68     		ldr	r2, [r5]
+  64 001c 2368     		ldr	r3, [r4]
+  65              		.loc 1 22 8 view .LVU14
+  66 001e 9A42     		cmp	r2, r3
+  67 0020 00D0     		beq	.L4
+  68              	.L1:
+  23:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+  24:Core/Src/button.c ****             KeyReg3 = KeyReg2;
+  25:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  26:Core/Src/button.c ****                 RESET_flag = 1;
+  27:Core/Src/button.c ****                 resetTimer10();
+  28:Core/Src/button.c ****             }
+  29:Core/Src/button.c ****         }
+  30:Core/Src/button.c ****     }
+  31:Core/Src/button.c **** }
+  69              		.loc 1 31 1 view .LVU15
+  70 0022 70BD     		pop	{r4, r5, r6, pc}
+  71              	.L4:
+  22:Core/Src/button.c ****     if (KeyReg2 == KeyReg1 && KeyReg1 == KeyReg0) {
+  72              		.loc 1 22 28 discriminator 1 view .LVU16
+  73 0024 9842     		cmp	r0, r3
+  74 0026 FCD1     		bne	.L1
+  23:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+  75              		.loc 1 23 9 is_stmt 1 view .LVU17
+  23:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+  76              		.loc 1 23 21 is_stmt 0 view .LVU18
+  77 0028 0A4B     		ldr	r3, .L5+16
+  78 002a 1B68     		ldr	r3, [r3]
+  23:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+  79              		.loc 1 23 12 view .LVU19
+  80 002c 9A42     		cmp	r2, r3
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 3
+
+
+  81 002e F8D0     		beq	.L1
+  24:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  82              		.loc 1 24 13 is_stmt 1 view .LVU20
+  24:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  83              		.loc 1 24 21 is_stmt 0 view .LVU21
+  84 0030 084B     		ldr	r3, .L5+16
+  85 0032 1A60     		str	r2, [r3]
+  25:Core/Src/button.c ****                 RESET_flag = 1;
+  86              		.loc 1 25 13 is_stmt 1 view .LVU22
+  25:Core/Src/button.c ****                 RESET_flag = 1;
+  87              		.loc 1 25 16 is_stmt 0 view .LVU23
+  88 0034 002A     		cmp	r2, #0
+  89 0036 F4D1     		bne	.L1
+  26:Core/Src/button.c ****                 resetTimer10();
+  90              		.loc 1 26 17 is_stmt 1 view .LVU24
+  26:Core/Src/button.c ****                 resetTimer10();
+  91              		.loc 1 26 28 is_stmt 0 view .LVU25
+  92 0038 074B     		ldr	r3, .L5+20
+  93 003a 0122     		movs	r2, #1
+  94 003c 1A60     		str	r2, [r3]
+  27:Core/Src/button.c ****             }
+  95              		.loc 1 27 17 is_stmt 1 view .LVU26
+  96 003e FFF7FEFF 		bl	resetTimer10
+  97              	.LVL1:
+  98              		.loc 1 31 1 is_stmt 0 view .LVU27
+  99 0042 EEE7     		b	.L1
+ 100              	.L6:
+ 101              		.align	2
+ 102              	.L5:
+ 103 0044 00000000 		.word	.LANCHOR0
+ 104 0048 00000000 		.word	.LANCHOR1
+ 105 004c 00000000 		.word	.LANCHOR2
+ 106 0050 00080140 		.word	1073809408
+ 107 0054 00000000 		.word	.LANCHOR3
+ 108 0058 00000000 		.word	.LANCHOR4
+ 109              		.cfi_endproc
+ 110              	.LFE65:
+ 112              		.section	.text.getINCInput,"ax",%progbits
+ 113              		.align	1
+ 114              		.global	getINCInput
+ 115              		.syntax unified
+ 116              		.thumb
+ 117              		.thumb_func
+ 119              	getINCInput:
+ 120              	.LFB66:
+  32:Core/Src/button.c **** 
+  33:Core/Src/button.c **** void getINCInput() {
+ 121              		.loc 1 33 20 is_stmt 1 view -0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125 0000 70B5     		push	{r4, r5, r6, lr}
+ 126              	.LCFI1:
+ 127              		.cfi_def_cfa_offset 16
+ 128              		.cfi_offset 4, -16
+ 129              		.cfi_offset 5, -12
+ 130              		.cfi_offset 6, -8
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 4
+
+
+ 131              		.cfi_offset 14, -4
+  34:Core/Src/button.c ****      static int pressCountdown = 300;
+ 132              		.loc 1 34 6 view .LVU29
+  35:Core/Src/button.c ****     static int KeyReg0 = NORMAL_STATE;
+ 133              		.loc 1 35 5 view .LVU30
+  36:Core/Src/button.c ****     static int KeyReg1 = NORMAL_STATE;
+ 134              		.loc 1 36 5 view .LVU31
+  37:Core/Src/button.c ****     static int KeyReg2 = NORMAL_STATE;
+ 135              		.loc 1 37 5 view .LVU32
+  38:Core/Src/button.c ****     static int KeyReg3 = NORMAL_STATE;
+ 136              		.loc 1 38 5 view .LVU33
+  39:Core/Src/button.c ****     KeyReg2 = KeyReg1;
+ 137              		.loc 1 39 5 view .LVU34
+ 138              		.loc 1 39 13 is_stmt 0 view .LVU35
+ 139 0002 1D4D     		ldr	r5, .L15
+ 140 0004 1D4C     		ldr	r4, .L15+4
+ 141 0006 2368     		ldr	r3, [r4]
+ 142 0008 2B60     		str	r3, [r5]
+  40:Core/Src/button.c ****     KeyReg1 = KeyReg0;
+ 143              		.loc 1 40 5 is_stmt 1 view .LVU36
+ 144              		.loc 1 40 13 is_stmt 0 view .LVU37
+ 145 000a 1D4E     		ldr	r6, .L15+8
+ 146 000c 3368     		ldr	r3, [r6]
+ 147 000e 2360     		str	r3, [r4]
+  41:Core/Src/button.c ****     KeyReg0 = HAL_GPIO_ReadPin(INC_GPIO_Port, INC_Pin);
+ 148              		.loc 1 41 5 is_stmt 1 view .LVU38
+ 149              		.loc 1 41 15 is_stmt 0 view .LVU39
+ 150 0010 8021     		movs	r1, #128
+ 151 0012 1C48     		ldr	r0, .L15+12
+ 152 0014 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 153              	.LVL2:
+ 154              		.loc 1 41 13 view .LVU40
+ 155 0018 3060     		str	r0, [r6]
+  42:Core/Src/button.c ****     if (KeyReg2 == KeyReg1 && KeyReg1 == KeyReg0) {
+ 156              		.loc 1 42 5 is_stmt 1 view .LVU41
+ 157              		.loc 1 42 17 is_stmt 0 view .LVU42
+ 158 001a 2A68     		ldr	r2, [r5]
+ 159 001c 2368     		ldr	r3, [r4]
+ 160              		.loc 1 42 8 view .LVU43
+ 161 001e 9A42     		cmp	r2, r3
+ 162 0020 00D0     		beq	.L13
+ 163              	.L7:
+  43:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+  44:Core/Src/button.c ****             KeyReg3 = KeyReg2;
+  45:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  46:Core/Src/button.c ****                 pressCountdown = 300;
+  47:Core/Src/button.c ****                 INC_flag = 1;
+  48:Core/Src/button.c ****                 resetTimer10();
+  49:Core/Src/button.c ****             }
+  50:Core/Src/button.c ****             else {
+  51:Core/Src/button.c ****                 INC_longpressed = 0;
+  52:Core/Src/button.c ****             }
+  53:Core/Src/button.c ****         }
+  54:Core/Src/button.c ****         else {
+  55:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  56:Core/Src/button.c ****                 resetTimer10();
+  57:Core/Src/button.c ****                 if (pressCountdown == 0) {
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 5
+
+
+  58:Core/Src/button.c ****                     INC_longpressed = 1;
+  59:Core/Src/button.c ****                     pressCountdown = 100;
+  60:Core/Src/button.c ****                 }
+  61:Core/Src/button.c ****                 else --pressCountdown;
+  62:Core/Src/button.c ****             }
+  63:Core/Src/button.c ****         }
+  64:Core/Src/button.c ****     }
+  65:Core/Src/button.c **** }
+ 164              		.loc 1 65 1 view .LVU44
+ 165 0022 70BD     		pop	{r4, r5, r6, pc}
+ 166              	.L13:
+  42:Core/Src/button.c ****     if (KeyReg2 == KeyReg1 && KeyReg1 == KeyReg0) {
+ 167              		.loc 1 42 28 discriminator 1 view .LVU45
+ 168 0024 9842     		cmp	r0, r3
+ 169 0026 FCD1     		bne	.L7
+  43:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+ 170              		.loc 1 43 9 is_stmt 1 view .LVU46
+  43:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+ 171              		.loc 1 43 21 is_stmt 0 view .LVU47
+ 172 0028 174B     		ldr	r3, .L15+16
+ 173 002a 1B68     		ldr	r3, [r3]
+  43:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+ 174              		.loc 1 43 12 view .LVU48
+ 175 002c 9A42     		cmp	r2, r3
+ 176 002e 10D0     		beq	.L9
+  44:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+ 177              		.loc 1 44 13 is_stmt 1 view .LVU49
+  44:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+ 178              		.loc 1 44 21 is_stmt 0 view .LVU50
+ 179 0030 154B     		ldr	r3, .L15+16
+ 180 0032 1A60     		str	r2, [r3]
+  45:Core/Src/button.c ****                 pressCountdown = 300;
+ 181              		.loc 1 45 13 is_stmt 1 view .LVU51
+  45:Core/Src/button.c ****                 pressCountdown = 300;
+ 182              		.loc 1 45 16 is_stmt 0 view .LVU52
+ 183 0034 1AB1     		cbz	r2, .L14
+  51:Core/Src/button.c ****             }
+ 184              		.loc 1 51 17 is_stmt 1 view .LVU53
+  51:Core/Src/button.c ****             }
+ 185              		.loc 1 51 33 is_stmt 0 view .LVU54
+ 186 0036 154B     		ldr	r3, .L15+20
+ 187 0038 0022     		movs	r2, #0
+ 188 003a 1A60     		str	r2, [r3]
+ 189 003c F1E7     		b	.L7
+ 190              	.L14:
+  46:Core/Src/button.c ****                 INC_flag = 1;
+ 191              		.loc 1 46 17 is_stmt 1 view .LVU55
+  46:Core/Src/button.c ****                 INC_flag = 1;
+ 192              		.loc 1 46 32 is_stmt 0 view .LVU56
+ 193 003e 144B     		ldr	r3, .L15+24
+ 194 0040 4FF49672 		mov	r2, #300
+ 195 0044 1A60     		str	r2, [r3]
+  47:Core/Src/button.c ****                 resetTimer10();
+ 196              		.loc 1 47 17 is_stmt 1 view .LVU57
+  47:Core/Src/button.c ****                 resetTimer10();
+ 197              		.loc 1 47 26 is_stmt 0 view .LVU58
+ 198 0046 134B     		ldr	r3, .L15+28
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 6
+
+
+ 199 0048 0122     		movs	r2, #1
+ 200 004a 1A60     		str	r2, [r3]
+  48:Core/Src/button.c ****             }
+ 201              		.loc 1 48 17 is_stmt 1 view .LVU59
+ 202 004c FFF7FEFF 		bl	resetTimer10
+ 203              	.LVL3:
+ 204 0050 E7E7     		b	.L7
+ 205              	.L9:
+  55:Core/Src/button.c ****                 resetTimer10();
+ 206              		.loc 1 55 13 view .LVU60
+  55:Core/Src/button.c ****                 resetTimer10();
+ 207              		.loc 1 55 16 is_stmt 0 view .LVU61
+ 208 0052 002B     		cmp	r3, #0
+ 209 0054 E5D1     		bne	.L7
+  56:Core/Src/button.c ****                 if (pressCountdown == 0) {
+ 210              		.loc 1 56 17 is_stmt 1 view .LVU62
+ 211 0056 FFF7FEFF 		bl	resetTimer10
+ 212              	.LVL4:
+  57:Core/Src/button.c ****                     INC_longpressed = 1;
+ 213              		.loc 1 57 17 view .LVU63
+  57:Core/Src/button.c ****                     INC_longpressed = 1;
+ 214              		.loc 1 57 36 is_stmt 0 view .LVU64
+ 215 005a 0D4B     		ldr	r3, .L15+24
+ 216 005c 1B68     		ldr	r3, [r3]
+  57:Core/Src/button.c ****                     INC_longpressed = 1;
+ 217              		.loc 1 57 20 view .LVU65
+ 218 005e 33B9     		cbnz	r3, .L11
+  58:Core/Src/button.c ****                     pressCountdown = 100;
+ 219              		.loc 1 58 21 is_stmt 1 view .LVU66
+  58:Core/Src/button.c ****                     pressCountdown = 100;
+ 220              		.loc 1 58 37 is_stmt 0 view .LVU67
+ 221 0060 0A4B     		ldr	r3, .L15+20
+ 222 0062 0122     		movs	r2, #1
+ 223 0064 1A60     		str	r2, [r3]
+  59:Core/Src/button.c ****                 }
+ 224              		.loc 1 59 21 is_stmt 1 view .LVU68
+  59:Core/Src/button.c ****                 }
+ 225              		.loc 1 59 36 is_stmt 0 view .LVU69
+ 226 0066 0A4B     		ldr	r3, .L15+24
+ 227 0068 6422     		movs	r2, #100
+ 228 006a 1A60     		str	r2, [r3]
+ 229 006c D9E7     		b	.L7
+ 230              	.L11:
+  61:Core/Src/button.c ****             }
+ 231              		.loc 1 61 22 is_stmt 1 view .LVU70
+ 232 006e 013B     		subs	r3, r3, #1
+ 233 0070 074A     		ldr	r2, .L15+24
+ 234 0072 1360     		str	r3, [r2]
+ 235              		.loc 1 65 1 is_stmt 0 view .LVU71
+ 236 0074 D5E7     		b	.L7
+ 237              	.L16:
+ 238 0076 00BF     		.align	2
+ 239              	.L15:
+ 240 0078 00000000 		.word	.LANCHOR5
+ 241 007c 00000000 		.word	.LANCHOR6
+ 242 0080 00000000 		.word	.LANCHOR7
+ 243 0084 00080140 		.word	1073809408
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 7
+
+
+ 244 0088 00000000 		.word	.LANCHOR8
+ 245 008c 00000000 		.word	.LANCHOR11
+ 246 0090 00000000 		.word	.LANCHOR9
+ 247 0094 00000000 		.word	.LANCHOR10
+ 248              		.cfi_endproc
+ 249              	.LFE66:
+ 251              		.section	.text.getDECInput,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	getDECInput
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	getDECInput:
+ 259              	.LFB67:
+  66:Core/Src/button.c **** 
+  67:Core/Src/button.c **** void getDECInput() { 
+ 260              		.loc 1 67 20 is_stmt 1 view -0
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 0
+ 263              		@ frame_needed = 0, uses_anonymous_args = 0
+ 264 0000 70B5     		push	{r4, r5, r6, lr}
+ 265              	.LCFI2:
+ 266              		.cfi_def_cfa_offset 16
+ 267              		.cfi_offset 4, -16
+ 268              		.cfi_offset 5, -12
+ 269              		.cfi_offset 6, -8
+ 270              		.cfi_offset 14, -4
+  68:Core/Src/button.c ****     static int pressCountdown = 300;
+ 271              		.loc 1 68 5 view .LVU73
+  69:Core/Src/button.c ****     static int KeyReg0 = NORMAL_STATE;
+ 272              		.loc 1 69 5 view .LVU74
+  70:Core/Src/button.c ****     static int KeyReg1 = NORMAL_STATE;
+ 273              		.loc 1 70 5 view .LVU75
+  71:Core/Src/button.c ****     static int KeyReg2 = NORMAL_STATE;
+ 274              		.loc 1 71 5 view .LVU76
+  72:Core/Src/button.c ****     static int KeyReg3 = NORMAL_STATE;
+ 275              		.loc 1 72 5 view .LVU77
+  73:Core/Src/button.c ****     KeyReg2 = KeyReg1;
+ 276              		.loc 1 73 5 view .LVU78
+ 277              		.loc 1 73 13 is_stmt 0 view .LVU79
+ 278 0002 1D4D     		ldr	r5, .L25
+ 279 0004 1D4C     		ldr	r4, .L25+4
+ 280 0006 2368     		ldr	r3, [r4]
+ 281 0008 2B60     		str	r3, [r5]
+  74:Core/Src/button.c ****     KeyReg1 = KeyReg0;
+ 282              		.loc 1 74 5 is_stmt 1 view .LVU80
+ 283              		.loc 1 74 13 is_stmt 0 view .LVU81
+ 284 000a 1D4E     		ldr	r6, .L25+8
+ 285 000c 3368     		ldr	r3, [r6]
+ 286 000e 2360     		str	r3, [r4]
+  75:Core/Src/button.c ****     KeyReg0 = HAL_GPIO_ReadPin(DEC_GPIO_Port, DEC_Pin);
+ 287              		.loc 1 75 5 is_stmt 1 view .LVU82
+ 288              		.loc 1 75 15 is_stmt 0 view .LVU83
+ 289 0010 4FF48071 		mov	r1, #256
+ 290 0014 1B48     		ldr	r0, .L25+12
+ 291 0016 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 292              	.LVL5:
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 8
+
+
+ 293              		.loc 1 75 13 view .LVU84
+ 294 001a 3060     		str	r0, [r6]
+  76:Core/Src/button.c ****     if (KeyReg2 == KeyReg1 && KeyReg1 == KeyReg0) {
+ 295              		.loc 1 76 5 is_stmt 1 view .LVU85
+ 296              		.loc 1 76 17 is_stmt 0 view .LVU86
+ 297 001c 2A68     		ldr	r2, [r5]
+ 298 001e 2368     		ldr	r3, [r4]
+ 299              		.loc 1 76 8 view .LVU87
+ 300 0020 9A42     		cmp	r2, r3
+ 301 0022 00D0     		beq	.L23
+ 302              	.L17:
+  77:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+  78:Core/Src/button.c ****             KeyReg3 = KeyReg2;
+  79:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  80:Core/Src/button.c ****                 pressCountdown = 300;
+  81:Core/Src/button.c ****                 DEC_flag = 1;
+  82:Core/Src/button.c ****                 resetTimer10();
+  83:Core/Src/button.c ****             }
+  84:Core/Src/button.c ****             else {
+  85:Core/Src/button.c ****                 DEC_longpressed = 0;
+  86:Core/Src/button.c ****             }
+  87:Core/Src/button.c ****         }
+  88:Core/Src/button.c ****         else {
+  89:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+  90:Core/Src/button.c ****                 resetTimer10();
+  91:Core/Src/button.c ****                 if (pressCountdown == 0) {
+  92:Core/Src/button.c ****                     DEC_longpressed = 1;
+  93:Core/Src/button.c ****                     pressCountdown = 100;
+  94:Core/Src/button.c ****                 }
+  95:Core/Src/button.c ****                 else --pressCountdown;
+  96:Core/Src/button.c ****             }
+  97:Core/Src/button.c ****         }
+  98:Core/Src/button.c ****     }
+  99:Core/Src/button.c **** 
+ 100:Core/Src/button.c **** }
+ 303              		.loc 1 100 1 view .LVU88
+ 304 0024 70BD     		pop	{r4, r5, r6, pc}
+ 305              	.L23:
+  76:Core/Src/button.c ****     if (KeyReg2 == KeyReg1 && KeyReg1 == KeyReg0) {
+ 306              		.loc 1 76 28 discriminator 1 view .LVU89
+ 307 0026 9842     		cmp	r0, r3
+ 308 0028 FCD1     		bne	.L17
+  77:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+ 309              		.loc 1 77 9 is_stmt 1 view .LVU90
+  77:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+ 310              		.loc 1 77 21 is_stmt 0 view .LVU91
+ 311 002a 174B     		ldr	r3, .L25+16
+ 312 002c 1B68     		ldr	r3, [r3]
+  77:Core/Src/button.c ****         if (KeyReg3 != KeyReg2) {
+ 313              		.loc 1 77 12 view .LVU92
+ 314 002e 9A42     		cmp	r2, r3
+ 315 0030 10D0     		beq	.L19
+  78:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+ 316              		.loc 1 78 13 is_stmt 1 view .LVU93
+  78:Core/Src/button.c ****             if (KeyReg3 == PRESSED_STATE) {
+ 317              		.loc 1 78 21 is_stmt 0 view .LVU94
+ 318 0032 154B     		ldr	r3, .L25+16
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 9
+
+
+ 319 0034 1A60     		str	r2, [r3]
+  79:Core/Src/button.c ****                 pressCountdown = 300;
+ 320              		.loc 1 79 13 is_stmt 1 view .LVU95
+  79:Core/Src/button.c ****                 pressCountdown = 300;
+ 321              		.loc 1 79 16 is_stmt 0 view .LVU96
+ 322 0036 1AB1     		cbz	r2, .L24
+  85:Core/Src/button.c ****             }
+ 323              		.loc 1 85 17 is_stmt 1 view .LVU97
+  85:Core/Src/button.c ****             }
+ 324              		.loc 1 85 33 is_stmt 0 view .LVU98
+ 325 0038 144B     		ldr	r3, .L25+20
+ 326 003a 0022     		movs	r2, #0
+ 327 003c 1A60     		str	r2, [r3]
+ 328 003e F1E7     		b	.L17
+ 329              	.L24:
+  80:Core/Src/button.c ****                 DEC_flag = 1;
+ 330              		.loc 1 80 17 is_stmt 1 view .LVU99
+  80:Core/Src/button.c ****                 DEC_flag = 1;
+ 331              		.loc 1 80 32 is_stmt 0 view .LVU100
+ 332 0040 134B     		ldr	r3, .L25+24
+ 333 0042 4FF49672 		mov	r2, #300
+ 334 0046 1A60     		str	r2, [r3]
+  81:Core/Src/button.c ****                 resetTimer10();
+ 335              		.loc 1 81 17 is_stmt 1 view .LVU101
+  81:Core/Src/button.c ****                 resetTimer10();
+ 336              		.loc 1 81 26 is_stmt 0 view .LVU102
+ 337 0048 124B     		ldr	r3, .L25+28
+ 338 004a 0122     		movs	r2, #1
+ 339 004c 1A60     		str	r2, [r3]
+  82:Core/Src/button.c ****             }
+ 340              		.loc 1 82 17 is_stmt 1 view .LVU103
+ 341 004e FFF7FEFF 		bl	resetTimer10
+ 342              	.LVL6:
+ 343 0052 E7E7     		b	.L17
+ 344              	.L19:
+  89:Core/Src/button.c ****                 resetTimer10();
+ 345              		.loc 1 89 13 view .LVU104
+  89:Core/Src/button.c ****                 resetTimer10();
+ 346              		.loc 1 89 16 is_stmt 0 view .LVU105
+ 347 0054 002B     		cmp	r3, #0
+ 348 0056 E5D1     		bne	.L17
+  90:Core/Src/button.c ****                 if (pressCountdown == 0) {
+ 349              		.loc 1 90 17 is_stmt 1 view .LVU106
+ 350 0058 FFF7FEFF 		bl	resetTimer10
+ 351              	.LVL7:
+  91:Core/Src/button.c ****                     DEC_longpressed = 1;
+ 352              		.loc 1 91 17 view .LVU107
+  91:Core/Src/button.c ****                     DEC_longpressed = 1;
+ 353              		.loc 1 91 36 is_stmt 0 view .LVU108
+ 354 005c 0C4B     		ldr	r3, .L25+24
+ 355 005e 1B68     		ldr	r3, [r3]
+  91:Core/Src/button.c ****                     DEC_longpressed = 1;
+ 356              		.loc 1 91 20 view .LVU109
+ 357 0060 33B9     		cbnz	r3, .L21
+  92:Core/Src/button.c ****                     pressCountdown = 100;
+ 358              		.loc 1 92 21 is_stmt 1 view .LVU110
+  92:Core/Src/button.c ****                     pressCountdown = 100;
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 10
+
+
+ 359              		.loc 1 92 37 is_stmt 0 view .LVU111
+ 360 0062 0A4B     		ldr	r3, .L25+20
+ 361 0064 0122     		movs	r2, #1
+ 362 0066 1A60     		str	r2, [r3]
+  93:Core/Src/button.c ****                 }
+ 363              		.loc 1 93 21 is_stmt 1 view .LVU112
+  93:Core/Src/button.c ****                 }
+ 364              		.loc 1 93 36 is_stmt 0 view .LVU113
+ 365 0068 094B     		ldr	r3, .L25+24
+ 366 006a 6422     		movs	r2, #100
+ 367 006c 1A60     		str	r2, [r3]
+ 368 006e D9E7     		b	.L17
+ 369              	.L21:
+  95:Core/Src/button.c ****             }
+ 370              		.loc 1 95 22 is_stmt 1 view .LVU114
+ 371 0070 013B     		subs	r3, r3, #1
+ 372 0072 074A     		ldr	r2, .L25+24
+ 373 0074 1360     		str	r3, [r2]
+ 374              		.loc 1 100 1 is_stmt 0 view .LVU115
+ 375 0076 D5E7     		b	.L17
+ 376              	.L26:
+ 377              		.align	2
+ 378              	.L25:
+ 379 0078 00000000 		.word	.LANCHOR12
+ 380 007c 00000000 		.word	.LANCHOR13
+ 381 0080 00000000 		.word	.LANCHOR14
+ 382 0084 00080140 		.word	1073809408
+ 383 0088 00000000 		.word	.LANCHOR15
+ 384 008c 00000000 		.word	.LANCHOR18
+ 385 0090 00000000 		.word	.LANCHOR16
+ 386 0094 00000000 		.word	.LANCHOR17
+ 387              		.cfi_endproc
+ 388              	.LFE67:
+ 390              		.section	.text.isRESETPressed,"ax",%progbits
+ 391              		.align	1
+ 392              		.global	isRESETPressed
+ 393              		.syntax unified
+ 394              		.thumb
+ 395              		.thumb_func
+ 397              	isRESETPressed:
+ 398              	.LFB68:
+ 101:Core/Src/button.c **** 
+ 102:Core/Src/button.c **** int isRESETPressed() {
+ 399              		.loc 1 102 22 is_stmt 1 view -0
+ 400              		.cfi_startproc
+ 401              		@ args = 0, pretend = 0, frame = 0
+ 402              		@ frame_needed = 0, uses_anonymous_args = 0
+ 403              		@ link register save eliminated.
+ 103:Core/Src/button.c ****     int ret = RESET_flag;
+ 404              		.loc 1 103 5 view .LVU117
+ 405              		.loc 1 103 9 is_stmt 0 view .LVU118
+ 406 0000 024B     		ldr	r3, .L28
+ 407 0002 1868     		ldr	r0, [r3]
+ 408              	.LVL8:
+ 104:Core/Src/button.c ****     RESET_flag = 0;
+ 409              		.loc 1 104 5 is_stmt 1 view .LVU119
+ 410              		.loc 1 104 16 is_stmt 0 view .LVU120
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 11
+
+
+ 411 0004 0022     		movs	r2, #0
+ 412 0006 1A60     		str	r2, [r3]
+ 105:Core/Src/button.c ****     return ret;
+ 413              		.loc 1 105 5 is_stmt 1 view .LVU121
+ 106:Core/Src/button.c **** }
+ 414              		.loc 1 106 1 is_stmt 0 view .LVU122
+ 415 0008 7047     		bx	lr
+ 416              	.L29:
+ 417 000a 00BF     		.align	2
+ 418              	.L28:
+ 419 000c 00000000 		.word	.LANCHOR4
+ 420              		.cfi_endproc
+ 421              	.LFE68:
+ 423              		.section	.text.isINCPressed,"ax",%progbits
+ 424              		.align	1
+ 425              		.global	isINCPressed
+ 426              		.syntax unified
+ 427              		.thumb
+ 428              		.thumb_func
+ 430              	isINCPressed:
+ 431              	.LFB69:
+ 107:Core/Src/button.c **** 
+ 108:Core/Src/button.c **** int isINCPressed() {
+ 432              		.loc 1 108 20 is_stmt 1 view -0
+ 433              		.cfi_startproc
+ 434              		@ args = 0, pretend = 0, frame = 0
+ 435              		@ frame_needed = 0, uses_anonymous_args = 0
+ 436              		@ link register save eliminated.
+ 109:Core/Src/button.c ****     int ret = INC_flag;
+ 437              		.loc 1 109 5 view .LVU124
+ 438              		.loc 1 109 9 is_stmt 0 view .LVU125
+ 439 0000 024B     		ldr	r3, .L31
+ 440 0002 1868     		ldr	r0, [r3]
+ 441              	.LVL9:
+ 110:Core/Src/button.c ****     INC_flag = 0;
+ 442              		.loc 1 110 5 is_stmt 1 view .LVU126
+ 443              		.loc 1 110 14 is_stmt 0 view .LVU127
+ 444 0004 0022     		movs	r2, #0
+ 445 0006 1A60     		str	r2, [r3]
+ 111:Core/Src/button.c ****     return ret;
+ 446              		.loc 1 111 5 is_stmt 1 view .LVU128
+ 112:Core/Src/button.c **** }
+ 447              		.loc 1 112 1 is_stmt 0 view .LVU129
+ 448 0008 7047     		bx	lr
+ 449              	.L32:
+ 450 000a 00BF     		.align	2
+ 451              	.L31:
+ 452 000c 00000000 		.word	.LANCHOR10
+ 453              		.cfi_endproc
+ 454              	.LFE69:
+ 456              		.section	.text.isDECPressed,"ax",%progbits
+ 457              		.align	1
+ 458              		.global	isDECPressed
+ 459              		.syntax unified
+ 460              		.thumb
+ 461              		.thumb_func
+ 463              	isDECPressed:
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 12
+
+
+ 464              	.LFB70:
+ 113:Core/Src/button.c **** 
+ 114:Core/Src/button.c **** int isDECPressed() {
+ 465              		.loc 1 114 20 is_stmt 1 view -0
+ 466              		.cfi_startproc
+ 467              		@ args = 0, pretend = 0, frame = 0
+ 468              		@ frame_needed = 0, uses_anonymous_args = 0
+ 469              		@ link register save eliminated.
+ 115:Core/Src/button.c ****     int ret = DEC_flag;
+ 470              		.loc 1 115 5 view .LVU131
+ 471              		.loc 1 115 9 is_stmt 0 view .LVU132
+ 472 0000 024B     		ldr	r3, .L34
+ 473 0002 1868     		ldr	r0, [r3]
+ 474              	.LVL10:
+ 116:Core/Src/button.c ****     DEC_flag = 0;
+ 475              		.loc 1 116 5 is_stmt 1 view .LVU133
+ 476              		.loc 1 116 14 is_stmt 0 view .LVU134
+ 477 0004 0022     		movs	r2, #0
+ 478 0006 1A60     		str	r2, [r3]
+ 117:Core/Src/button.c ****     return ret;
+ 479              		.loc 1 117 5 is_stmt 1 view .LVU135
+ 118:Core/Src/button.c **** }
+ 480              		.loc 1 118 1 is_stmt 0 view .LVU136
+ 481 0008 7047     		bx	lr
+ 482              	.L35:
+ 483 000a 00BF     		.align	2
+ 484              	.L34:
+ 485 000c 00000000 		.word	.LANCHOR17
+ 486              		.cfi_endproc
+ 487              	.LFE70:
+ 489              		.section	.text.isINCLongPressed,"ax",%progbits
+ 490              		.align	1
+ 491              		.global	isINCLongPressed
+ 492              		.syntax unified
+ 493              		.thumb
+ 494              		.thumb_func
+ 496              	isINCLongPressed:
+ 497              	.LFB71:
+ 119:Core/Src/button.c **** 
+ 120:Core/Src/button.c **** int isINCLongPressed() {
+ 498              		.loc 1 120 24 is_stmt 1 view -0
+ 499              		.cfi_startproc
+ 500              		@ args = 0, pretend = 0, frame = 0
+ 501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 502              		@ link register save eliminated.
+ 121:Core/Src/button.c ****     int ret = INC_longpressed;
+ 503              		.loc 1 121 5 view .LVU138
+ 504              		.loc 1 121 9 is_stmt 0 view .LVU139
+ 505 0000 024B     		ldr	r3, .L37
+ 506 0002 1868     		ldr	r0, [r3]
+ 507              	.LVL11:
+ 122:Core/Src/button.c ****     INC_longpressed = 0;
+ 508              		.loc 1 122 5 is_stmt 1 view .LVU140
+ 509              		.loc 1 122 21 is_stmt 0 view .LVU141
+ 510 0004 0022     		movs	r2, #0
+ 511 0006 1A60     		str	r2, [r3]
+ 123:Core/Src/button.c ****     return ret;
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 13
+
+
+ 512              		.loc 1 123 5 is_stmt 1 view .LVU142
+ 124:Core/Src/button.c **** }
+ 513              		.loc 1 124 1 is_stmt 0 view .LVU143
+ 514 0008 7047     		bx	lr
+ 515              	.L38:
+ 516 000a 00BF     		.align	2
+ 517              	.L37:
+ 518 000c 00000000 		.word	.LANCHOR11
+ 519              		.cfi_endproc
+ 520              	.LFE71:
+ 522              		.section	.text.isDECLongPressed,"ax",%progbits
+ 523              		.align	1
+ 524              		.global	isDECLongPressed
+ 525              		.syntax unified
+ 526              		.thumb
+ 527              		.thumb_func
+ 529              	isDECLongPressed:
+ 530              	.LFB72:
+ 125:Core/Src/button.c **** 
+ 126:Core/Src/button.c **** int isDECLongPressed() {
+ 531              		.loc 1 126 24 is_stmt 1 view -0
+ 532              		.cfi_startproc
+ 533              		@ args = 0, pretend = 0, frame = 0
+ 534              		@ frame_needed = 0, uses_anonymous_args = 0
+ 535              		@ link register save eliminated.
+ 127:Core/Src/button.c ****     int ret = DEC_longpressed;
+ 536              		.loc 1 127 5 view .LVU145
+ 537              		.loc 1 127 9 is_stmt 0 view .LVU146
+ 538 0000 024B     		ldr	r3, .L40
+ 539 0002 1868     		ldr	r0, [r3]
+ 540              	.LVL12:
+ 128:Core/Src/button.c ****     DEC_longpressed = 0;
+ 541              		.loc 1 128 5 is_stmt 1 view .LVU147
+ 542              		.loc 1 128 21 is_stmt 0 view .LVU148
+ 543 0004 0022     		movs	r2, #0
+ 544 0006 1A60     		str	r2, [r3]
+ 129:Core/Src/button.c ****     return ret;
+ 545              		.loc 1 129 5 is_stmt 1 view .LVU149
+ 130:Core/Src/button.c **** }...
+ 546              		.loc 1 130 1 is_stmt 0 view .LVU150
+ 547 0008 7047     		bx	lr
+ 548              	.L41:
+ 549 000a 00BF     		.align	2
+ 550              	.L40:
+ 551 000c 00000000 		.word	.LANCHOR18
+ 552              		.cfi_endproc
+ 553              	.LFE72:
+ 555              		.section	.bss.DEC_flag,"aw",%nobits
+ 556              		.align	2
+ 557              		.set	.LANCHOR17,. + 0
+ 560              	DEC_flag:
+ 561 0000 00000000 		.space	4
+ 562              		.section	.bss.DEC_longpressed,"aw",%nobits
+ 563              		.align	2
+ 564              		.set	.LANCHOR18,. + 0
+ 567              	DEC_longpressed:
+ 568 0000 00000000 		.space	4
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 14
+
+
+ 569              		.section	.bss.INC_flag,"aw",%nobits
+ 570              		.align	2
+ 571              		.set	.LANCHOR10,. + 0
+ 574              	INC_flag:
+ 575 0000 00000000 		.space	4
+ 576              		.section	.bss.INC_longpressed,"aw",%nobits
+ 577              		.align	2
+ 578              		.set	.LANCHOR11,. + 0
+ 581              	INC_longpressed:
+ 582 0000 00000000 		.space	4
+ 583              		.section	.bss.RESET_flag,"aw",%nobits
+ 584              		.align	2
+ 585              		.set	.LANCHOR4,. + 0
+ 588              	RESET_flag:
+ 589 0000 00000000 		.space	4
+ 590              		.section	.data.KeyReg0.11,"aw"
+ 591              		.align	2
+ 592              		.set	.LANCHOR2,. + 0
+ 595              	KeyReg0.11:
+ 596 0000 01000000 		.word	1
+ 597              		.section	.data.KeyReg0.2,"aw"
+ 598              		.align	2
+ 599              		.set	.LANCHOR14,. + 0
+ 602              	KeyReg0.2:
+ 603 0000 01000000 		.word	1
+ 604              		.section	.data.KeyReg0.7,"aw"
+ 605              		.align	2
+ 606              		.set	.LANCHOR7,. + 0
+ 609              	KeyReg0.7:
+ 610 0000 01000000 		.word	1
+ 611              		.section	.data.KeyReg1.13,"aw"
+ 612              		.align	2
+ 613              		.set	.LANCHOR1,. + 0
+ 616              	KeyReg1.13:
+ 617 0000 01000000 		.word	1
+ 618              		.section	.data.KeyReg1.4,"aw"
+ 619              		.align	2
+ 620              		.set	.LANCHOR13,. + 0
+ 623              	KeyReg1.4:
+ 624 0000 01000000 		.word	1
+ 625              		.section	.data.KeyReg1.9,"aw"
+ 626              		.align	2
+ 627              		.set	.LANCHOR6,. + 0
+ 630              	KeyReg1.9:
+ 631 0000 01000000 		.word	1
+ 632              		.section	.data.KeyReg2.12,"aw"
+ 633              		.align	2
+ 634              		.set	.LANCHOR0,. + 0
+ 637              	KeyReg2.12:
+ 638 0000 01000000 		.word	1
+ 639              		.section	.data.KeyReg2.3,"aw"
+ 640              		.align	2
+ 641              		.set	.LANCHOR12,. + 0
+ 644              	KeyReg2.3:
+ 645 0000 01000000 		.word	1
+ 646              		.section	.data.KeyReg2.8,"aw"
+ 647              		.align	2
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 15
+
+
+ 648              		.set	.LANCHOR5,. + 0
+ 651              	KeyReg2.8:
+ 652 0000 01000000 		.word	1
+ 653              		.section	.data.KeyReg3.1,"aw"
+ 654              		.align	2
+ 655              		.set	.LANCHOR15,. + 0
+ 658              	KeyReg3.1:
+ 659 0000 01000000 		.word	1
+ 660              		.section	.data.KeyReg3.10,"aw"
+ 661              		.align	2
+ 662              		.set	.LANCHOR3,. + 0
+ 665              	KeyReg3.10:
+ 666 0000 01000000 		.word	1
+ 667              		.section	.data.KeyReg3.6,"aw"
+ 668              		.align	2
+ 669              		.set	.LANCHOR8,. + 0
+ 672              	KeyReg3.6:
+ 673 0000 01000000 		.word	1
+ 674              		.section	.data.pressCountdown.0,"aw"
+ 675              		.align	2
+ 676              		.set	.LANCHOR16,. + 0
+ 679              	pressCountdown.0:
+ 680 0000 2C010000 		.word	300
+ 681              		.section	.data.pressCountdown.5,"aw"
+ 682              		.align	2
+ 683              		.set	.LANCHOR9,. + 0
+ 686              	pressCountdown.5:
+ 687 0000 2C010000 		.word	300
+ 688              		.text
+ 689              	.Letext0:
+ 690              		.file 2 "c:\\stm32toolchain\\arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi\\arm-none-ea
+ 691              		.file 3 "c:\\stm32toolchain\\arm-gnu-toolchain-11.3.rel1-mingw-w64-i686-arm-none-eabi\\arm-none-ea
+ 692              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103x6.h"
+ 693              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h"
+ 694              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 695              		.file 7 "Core/Inc/timer.h"
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 button.c
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:18     .text.getRESETInput:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:24     .text.getRESETInput:00000000 getRESETInput
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:103    .text.getRESETInput:00000044 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:113    .text.getINCInput:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:119    .text.getINCInput:00000000 getINCInput
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:240    .text.getINCInput:00000078 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:252    .text.getDECInput:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:258    .text.getDECInput:00000000 getDECInput
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:379    .text.getDECInput:00000078 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:391    .text.isRESETPressed:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:397    .text.isRESETPressed:00000000 isRESETPressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:419    .text.isRESETPressed:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:424    .text.isINCPressed:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:430    .text.isINCPressed:00000000 isINCPressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:452    .text.isINCPressed:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:457    .text.isDECPressed:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:463    .text.isDECPressed:00000000 isDECPressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:485    .text.isDECPressed:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:490    .text.isINCLongPressed:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:496    .text.isINCLongPressed:00000000 isINCLongPressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:518    .text.isINCLongPressed:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:523    .text.isDECLongPressed:00000000 $t
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:529    .text.isDECLongPressed:00000000 isDECLongPressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:551    .text.isDECLongPressed:0000000c $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:556    .bss.DEC_flag:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:560    .bss.DEC_flag:00000000 DEC_flag
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:563    .bss.DEC_longpressed:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:567    .bss.DEC_longpressed:00000000 DEC_longpressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:570    .bss.INC_flag:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:574    .bss.INC_flag:00000000 INC_flag
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:577    .bss.INC_longpressed:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:581    .bss.INC_longpressed:00000000 INC_longpressed
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:584    .bss.RESET_flag:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:588    .bss.RESET_flag:00000000 RESET_flag
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:591    .data.KeyReg0.11:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:595    .data.KeyReg0.11:00000000 KeyReg0.11
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:598    .data.KeyReg0.2:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:602    .data.KeyReg0.2:00000000 KeyReg0.2
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:605    .data.KeyReg0.7:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:609    .data.KeyReg0.7:00000000 KeyReg0.7
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:612    .data.KeyReg1.13:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:616    .data.KeyReg1.13:00000000 KeyReg1.13
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:619    .data.KeyReg1.4:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:623    .data.KeyReg1.4:00000000 KeyReg1.4
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:626    .data.KeyReg1.9:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:630    .data.KeyReg1.9:00000000 KeyReg1.9
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:633    .data.KeyReg2.12:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:637    .data.KeyReg2.12:00000000 KeyReg2.12
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:640    .data.KeyReg2.3:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:644    .data.KeyReg2.3:00000000 KeyReg2.3
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:647    .data.KeyReg2.8:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:651    .data.KeyReg2.8:00000000 KeyReg2.8
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:654    .data.KeyReg3.1:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:658    .data.KeyReg3.1:00000000 KeyReg3.1
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:661    .data.KeyReg3.10:00000000 $d
+ARM GAS  C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s 			page 17
+
+
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:665    .data.KeyReg3.10:00000000 KeyReg3.10
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:668    .data.KeyReg3.6:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:672    .data.KeyReg3.6:00000000 KeyReg3.6
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:675    .data.pressCountdown.0:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:679    .data.pressCountdown.0:00000000 pressCountdown.0
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:682    .data.pressCountdown.5:00000000 $d
+C:\Users\nguye\AppData\Local\Temp\ccoB5LCZ.s:686    .data.pressCountdown.5:00000000 pressCountdown.5
+
+UNDEFINED SYMBOLS
+HAL_GPIO_ReadPin
+resetTimer10
